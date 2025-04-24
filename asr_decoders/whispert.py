@@ -60,7 +60,7 @@ def run(args):
 
             audio = whisper.load_audio(audioFile)
 
-            model = whisper.load_model(name="large-v2", download_root="/vol/tensusers5/wharmsen/whisper/.cache")
+            model = whisper.load_model(name="large-v2")
 
             # Parse ASR settings
             det_dis=False
@@ -74,13 +74,10 @@ def run(args):
             if 'vad' in asrSettings:
                 vad_boolean = True
 
-            # parser.add_argument("--initial_prompt", type=str, default=None, help="optional text to provide as a prompt for the first window.")
-            # try:
             result = whisper.transcribe(model, audio, language="nl", detect_disfluencies=det_dis, vad=vad_boolean, initial_prompt=taskPrompt)
             with open(output_json_file, 'w') as f:
                 f.write(json.dumps(result, indent = 2, ensure_ascii = False))
-            # except:
-            #     print('Error for', os.path.basename(audioFile))
+
 
     endTime = datetime.now()
 

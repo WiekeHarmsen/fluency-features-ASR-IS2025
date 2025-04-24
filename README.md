@@ -11,6 +11,10 @@ This repository contains a pipeline to automatically calculate features related 
 
     `pip install -e .`
 
+3. To install the required packages:
+    
+    `pip install requirements.txt`
+
 ## Step 1: Prepare your data
 
 Create a folder $datasetDir to which you add the following four folders with input data:
@@ -48,9 +52,14 @@ Example of input data in tree structure:
 Open `uber.sh` and set the input variable 'datasetDir' to the folder $datasetDir that you created in step 1.
 
 Run ./uber.sh and the following steps are performed:
-- The audio recordings in 02_audio are automatically transcribed using whisper-timestamped (see: 04_audio/<asrSystem>/json_asr_results).
-- These ASR transcripts are automatically aligned with the prompts see: 04_audio/<asrSystem>/csv-align-forward and 04_audio/<asrSystem>/csv-align-forward-ins.
+- The audio recordings in 02_audio are automatically transcribed using whisper-timestamped (model: asr-decoders/whispert.py; output: 04_audio/<asrSystem>/json_asr_results).
+- These ASR transcripts are automatically aligned with the prompts see: 04_audio/<asrSystem>/csv-align-forward and 04_audio/<asrSystem>/csv-align-forward-ins (contains by the speaker inserted words and phrases).
 - Automatic fluency features are computed from these ASR results and the alignments with the prompt and saved in the folder `$datasetDir/05_automatic_fluency_features`.
 - Human fluency features are computed form the manual/human orthographic transcriptions (00_orig_data/textgrids) and saved in the folder `$datasetDir/06_manual_fluency_features`
 
 ![ASR-based fluency feature computation pipeline](images/fluency-feature-computation-pipeline.jpg "The fluency feature computation pipeline.")
+
+# Citation
+If you use this repository, please use the following reference:
+
+    Harmsen, W., van Hout, R., Cucchiarini, C. and Strik, H. (2025). Can ASR generate valid measures of child reading fluency? 
