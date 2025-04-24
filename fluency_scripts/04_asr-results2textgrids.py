@@ -12,7 +12,8 @@ import librosa
 import argparse
 import unidecode
 
-import sclite.sclite_string_normalizer as sclite_norm # see dartastla package
+import utils.sclite_string_normalizer as sclite_norm
+# import sclite.sclite_string_normalizer as sclite_norm # see dartastla package
 
 # normalized_string = sclite_norm.normalize_string('Hallo! Ik*u ben van-vandaag hier*a met 50 en 1 persoon s\'avonds, waaronder m\'n Cas en Lucas. Hoe is \'t?', annTags=True)
 # print('\n', normalized_string)
@@ -51,7 +52,8 @@ def obj2dfRow(obj):
     start = obj['start']
     end = obj['end']
     txt = obj['text']
-    txt_norm = sclite_norm.normalize_string(txt)
+    # txt_norm = sclite_norm.normalize_string(txt)
+    txt_norm = sclite_norm.normalize_string(txt, names_as_prompt = False)
 
     return [txt, start, end, txt_norm]
 
@@ -60,7 +62,8 @@ def obj2intervalSegm(obj):
     end = obj['end']
     txt = obj['text'].strip()
 
-    txt = sclite_norm.normalize_string(txt)
+    # txt = sclite_norm.normalize_string(txt)
+    txt = sclite_norm.normalize_string(txt, names_as_prompt = False)
 
     return tgt.core.Interval(start, end, text=txt)
 
@@ -174,10 +177,12 @@ def run(args):
         asrTransList_norm.append([basename, " ".join(list(df['text_norm'])).strip()])
 
     asrTransDF_orig = pd.DataFrame(asrTransList_orig, columns = ['audioID','ASR_transcription']).set_index('audioID').sort_index()
-    asrTransDF_orig.to_csv(jsonAsrResultsDir.replace('json-asr-results', 'at-orig.csv'))
+    asrTransFile_orig = jsonAsrResultsDir.replace('json-asr-results', 'at-orig') + '.csv'
+    asrTransDF_orig.to_csv(asrTransFile_orig)
 
     asrTransDF_norm = pd.DataFrame(asrTransList_norm, columns = ['audioID','ASR_transcription']).set_index('audioID').sort_index()
-    asrTransDF_norm.to_csv(jsonAsrResultsDir.replace('json-asr-results', 'at-norm.csv'))
+    asrTransFile_norm = jsonAsrResultsDir.replace('json-asr-results', 'at-norm') + '.csv'
+    asrTransDF_norm.to_csv(asrTransFile_norm)
 
     print('The following files are created:')
     print(len(glob.glob(os.path.join(outputDirDF, '*.tsv'))), 'tsv files in' , outputDirDF)

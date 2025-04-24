@@ -1,6 +1,16 @@
 # fluency-features-ASR-IS2025
 This repository contains a pipeline to automatically calculate features related to oral reading fluency from speech.
 
+## Setup
+
+1. Navigate in your terminal to the repository.
+
+    `cd fluency-features-ASR-IS2025`
+
+2. To install the repository as a local package, run:
+
+    `pip install -e .`
+
 ## Step 1: Prepare your data
 
 Create a folder $datasetDir to which you add the following four folders with input data:

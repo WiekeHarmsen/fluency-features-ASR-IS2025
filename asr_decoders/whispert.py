@@ -27,10 +27,6 @@ print('Number CUDA Devices:', torch.cuda.device_count())
 print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
 print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
 
-###
-# $ nohup time python3 whispert.py &
-####y
-
 def run(args):
 
     audioDir = args.audioDir
@@ -79,12 +75,12 @@ def run(args):
                 vad_boolean = True
 
             # parser.add_argument("--initial_prompt", type=str, default=None, help="optional text to provide as a prompt for the first window.")
-            try:
-                result = whisper.transcribe(model, audio, language="nl", detect_disfluencies=det_dis, vad=vad_boolean, initial_prompt=taskPrompt)
-                with open(output_json_file, 'w') as f:
-                    f.write(json.dumps(result, indent = 2, ensure_ascii = False))
-            except:
-                print('Error for', os.path.basename(audioFile))
+            # try:
+            result = whisper.transcribe(model, audio, language="nl", detect_disfluencies=det_dis, vad=vad_boolean, initial_prompt=taskPrompt)
+            with open(output_json_file, 'w') as f:
+                f.write(json.dumps(result, indent = 2, ensure_ascii = False))
+            # except:
+            #     print('Error for', os.path.basename(audioFile))
 
     endTime = datetime.now()
 

@@ -5,10 +5,13 @@ import json
 import numpy as np
 import argparse
 
-def renameFile(fileName):
-    spk = fileName.split('-')[0]
-    task = fileName.split('-')[1]
-    return spk + '-' + task.replace('.json', '')
+# def renameFile(fileName):
+#     spk = fileName.split('-')[0]
+#     task = fileName.split('-')[1]
+#     return spk + '-' + task.replace('.json', '')
+
+# def renameFile(fileName):
+#     return fileName.split('-20')[0]
 
 def readWhisperToutputJSON(jsonFile):
     with open(jsonFile, 'r') as f:
@@ -107,7 +110,7 @@ def run(args):
     for jsonAsrResult in jsonAsrResultsList:
 
         # Get basename of file
-        basename = renameFile(os.path.basename(jsonAsrResult))
+        basename = (os.path.basename(jsonAsrResult)).replace('.json', '')
 
         # 1. Read JSON file
         data = readWhisperToutputJSON(jsonAsrResult)

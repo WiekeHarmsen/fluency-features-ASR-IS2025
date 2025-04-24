@@ -50,7 +50,7 @@ def run(args):
     if not os.path.exists(outputDirSentenceTimestamps):
         os.makedirs(outputDirSentenceTimestamps)
         
-    fileList = glob.glob(os.path.join(basePath, asrSystem + '/csv-align-forward/N000025-AVI6_story2*.csv' ))
+    fileList = glob.glob(os.path.join(basePath, asrSystem + '/csv-align-forward/*.csv' ))
 
     if len(fileList) > 0:
     
@@ -65,7 +65,7 @@ def run(args):
             df = pd.read_csv(file, index_col=0).rename(columns = {'prompt_label' : 'label', 'prompt_start': 'start', 'prompt_end': 'end', 'prompt_conf': 'conf', 'prompt_miscue': 'miscue'})
 
             df['sentence_nr'] = [x.split('-')[0] for x in df.index]
-            print('sentence_nr:', sorted(list(set([int(x.split('-')[0]) for x in df.index]))))
+            # print('sentence_nr:', sorted(list(set([int(x.split('-')[0]) for x in df.index]))))
 
             start_time = [x for x in df['start'] if x > 0.0][0]
             end_time = [x for x in df['end'] if x > 0.0][-1]
@@ -75,7 +75,7 @@ def run(args):
             ###     All Pauses         ###
             ##############################
             all_pauses = getIntraWordPauses(df[df['end'] > 0])
-            print(len(all_pauses), all_pauses)
+            # print(len(all_pauses), all_pauses)
             outputAllDict = getDescriptiveStatistics(all_pauses, dur_min)
             allDictList.append(pd.DataFrame.from_dict({basename : outputAllDict}))
 
@@ -102,7 +102,7 @@ def run(args):
 
             # Compute statistics from intrasentential pauses
             intrasentential_pauses = [item for sublist in intrasentential_pause_list for item in sublist]
-            print(len(intrasentential_pauses), intrasentential_pauses)
+            # print(len(intrasentential_pauses), intrasentential_pauses)
             outputIntraDict = getDescriptiveStatistics(intrasentential_pauses, dur_min)
             intraDictList.append(pd.DataFrame.from_dict({basename : outputIntraDict}))
 
@@ -114,7 +114,7 @@ def run(args):
             ### Intersentential Pauses ###
             ##############################
             intersentential_pauses = getIntraWordPauses(sentenceTimeDF)
-            print(len(intersentential_pauses), intersentential_pauses)
+            # print(len(intersentential_pauses), intersentential_pauses)
             outputInterDict = getDescriptiveStatistics(intersentential_pauses, dur_min)
             interDictList.append(pd.DataFrame.from_dict({basename : outputInterDict}))
             
@@ -166,6 +166,8 @@ def run(args):
         print('Created: ', os.path.join(outputDir, 'timing_all.tsv' ))
         print('Created: ', os.path.join(outputDir, 'timing_intra.tsv' ))
         print('Created: ', os.path.join(outputDir, 'timing_inter.tsv' ))
+        print('Created: ', os.path.join(outputDirSentenceTimestamps, '*.tsv' ))
+        
     
     else:
         print('No files in ./csv-align-forward')

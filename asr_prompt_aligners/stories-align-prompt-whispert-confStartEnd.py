@@ -33,8 +33,8 @@ import numpy as np
 # pip install -e .
 # python -c "import sys; print(sys.path)"
 # import alignment_adagt.string_manipulations as strman
-import sclite.sclite_string_normalizer as sclite_norm
-import alignment_modern as alignmod
+import utils.sclite_string_normalizer as sclite_norm
+import utils.alignment_modern as alignmod
 
 # nohup time python ./02-stories-align-prompt-whispert.py &
 
@@ -46,7 +46,8 @@ def readPromptFile(path_to_prompt_file):
     with open(path_to_prompt_file, 'r') as f:
         promptRaw = f.read().replace('\n', ' ')
 
-    prompt = sclite_norm.normalize_string(promptRaw, annTags=False)
+    # prompt = sclite_norm.normalize_string(promptRaw, annTags=False)
+    prompt = sclite_norm.normalize_string(promptRaw, annTags=False, names_as_prompt=False)
     return prompt
 
 def getPromptIdxs(promptIdxFile):
@@ -67,7 +68,8 @@ def readAsrResult(asrResultFile):
 
     # Get 'text' property
     asrTranscriptionRaw = asrResult['text']
-    asrTranscription = sclite_norm.normalize_string(asrTranscriptionRaw)
+    # asrTranscription = sclite_norm.normalize_string(asrTranscriptionRaw)
+    asrTranscription = sclite_norm.normalize_string(asrTranscriptionRaw, names_as_prompt=False)
 
     # Get 'segments' property
     recWordsList = []
@@ -75,7 +77,8 @@ def readAsrResult(asrResultFile):
         words = segment['words']
         for word in words:
 
-            label = sclite_norm.normalize_string(word['text'])
+            # label = sclite_norm.normalize_string(word['text'])
+            label = sclite_norm.normalize_string(word['text'], names_as_prompt=False)
 
             # If no disfluency
             if (label != '[*]' and label != ''):
@@ -425,13 +428,13 @@ def addConfidenceScores(promptAlignDF, recWordsDF):
                         print(recWordsList[0][0] == prompt)
 
 
-            # print(pd.DataFrame(subPromptList))
-            # Extract prompt info from subPromptList
-            prompt_label = " ".join([x[0] for x in subPromptList])
-            prompt_conf = np.mean([float(x[1]) for x in subPromptList]) # 1=subprompt_start
-            prompt_start = subPromptList[0][2] # 2=subprompt_start
-            prompt_end = subPromptList[-1][3] # 3=subprompt_end
-            prompt_miscue = "-".join([x[4] for x in subPromptList]) # 4=reading miscue
+                # print(pd.DataFrame(subPromptList))
+                # Extract prompt info from subPromptList
+                prompt_label = " ".join([x[0] for x in subPromptList])
+                prompt_conf = np.mean([float(x[1]) for x in subPromptList]) # 1=subprompt_start
+                prompt_start = subPromptList[0][2] # 2=subprompt_start
+                prompt_end = subPromptList[-1][3] # 3=subprompt_end
+                prompt_miscue = "-".join([x[4] for x in subPromptList]) # 4=reading miscue
 
         confStartEndList.append([prompt_label, prompt_conf, prompt_start, prompt_end, prompt_miscue])
 
@@ -545,8 +548,6 @@ def run(args):
         # Check if csv alignment file already exists. If not, do the alignment process.
         forwardExists = os.path.isfile(os.path.join(outputDir, 'csv-align-forward/' + basename + '.csv'))
         # if not forwardExists:
-
-        print(basename)
 
         checkIfFilesExist(asrResultFile, promptFile)
 
