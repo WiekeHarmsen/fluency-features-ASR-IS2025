@@ -18,12 +18,13 @@ This repository contains a pipeline to automatically calculate features related 
 ## Step 1: Prepare your data
 
 Create a folder $datasetDir to which you add the following four folders with input data:
-
-00_orig_data/audio          original .wav files of children reading stories
-00_orig_data/textgrids:     .TextGrid files with orthographic transcriptions.
-01_prompts                  <promptID>.prompt files with the story the child had to read and <promptID>-wordIDX.csv files with the prompt words annotated with prompt_id (structure: <sentence_nr>_<word_nr>_<prompt>)
-02_audio                    preprocessed .wav files, one .wav file for each read story, naming convention: <speakerID>-<promptID>.wav
-03_metadata                 contains one file, recordingsDF.tsv, which links all information (i.e., original audio file name, preprocessed audio file name, promptID, speakerID, etc.)
+| Folder | Description|
+|---|---|
+| 00_orig_data/audio          | original .wav files of children reading stories | 
+| 00_orig_data/textgrids     | .TextGrid files with orthographic transcriptions. | 
+| 01_prompts                 |  <promptID>.prompt files with the story the child had to read and <promptID>-wordIDX.csv files with the prompt words annotated with prompt_id (structure: <sentence_nr>_<word_nr>_<prompt>) | 
+| 02_audio                    | preprocessed .wav files, one .wav file for each read story, naming convention: <speakerID>-<promptID>.wav | 
+| 03_metadata                 | contains one file, recordingsDF.tsv, which links all information (i.e., original audio file name, preprocessed audio file name, promptID, speakerID, etc.) | 
 
 Example of input data in tree structure:
 ```
